@@ -5,6 +5,7 @@ import (
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
 	"hexagonal-architecture/repository"
+	"hexagonal-architecture/service"
 )
 
 func main() {
@@ -14,18 +15,17 @@ func main() {
 	}
 
 	customerRepository := repository.NewCustomerRepositoryDB(db)
-	_ = customerRepository
+	customerService := service.NewCustomerService(customerRepository)
 
-	customers, err := customerRepository.GetAll()
+	customers, err := customerService.GetCustomers()
 	if err != nil {
 		panic(err)
 	}
-
 	fmt.Println("customers : ", customers)
 
-	customer, err := customerRepository.GetById(7)
+	customer, err := customerService.GetCustomer(7)
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println("customer 7 : ", customer)
+	fmt.Println("customer : ", customer)
 }

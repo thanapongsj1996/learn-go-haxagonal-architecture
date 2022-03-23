@@ -12,7 +12,7 @@ func NewCustomerRepositoryDB(db *sqlx.DB) customerRepositoryDB {
 
 func (r customerRepositoryDB) GetAll() ([]Customer, error) {
 	var customers []Customer
-	query := "select name from users"
+	query := "select * from users"
 
 	err := r.db.Select(&customers, query)
 	if err != nil {
@@ -23,7 +23,7 @@ func (r customerRepositoryDB) GetAll() ([]Customer, error) {
 
 func (r customerRepositoryDB) GetById(id int) (*Customer, error) {
 	var customer Customer
-	query := "select name from users where id=$1"
+	query := "select * from users where id=$1"
 
 	err := r.db.Get(&customer, query, id)
 	if err != nil {
