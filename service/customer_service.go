@@ -1,6 +1,8 @@
 package service
 
 import (
+	"database/sql"
+	"errors"
 	"hexagonal-architecture/repository"
 	"log"
 )
@@ -36,6 +38,11 @@ func (s customerService) GetCustomers() ([]CustomerResponse, error) {
 func (s customerService) GetCustomer(id int) (*CustomerResponse, error) {
 	customer, err := s.customerRepo.GetById(id)
 	if err != nil {
+
+		if err == sql.ErrNoRows {
+			return nil, errors.New("customer not found")
+		}
+
 		log.Println(err)
 		return nil, err
 	}
